@@ -4,12 +4,12 @@
 
 **Answer in one line.** Late deliveries are concentrated, not random: Rio de Janeiro runs at 12.1% late against 4.5% in São Paulo, two peak periods (Black Friday 2017 and February to March 2018) pushed the late rate to between 12% and 19%, and 78 sellers with more than 10% late orders average 3.88 stars against 4.26 for reliable sellers.
 
-**Tableau Public:** link to be added after publishing (steps in the Build Guide).
+**Live dashboard on Tableau Public:** [Delivery Performance Dashboard](https://public.tableau.com/app/profile/varun.rathi8429/viz/DeliveryPerformanceDashboard_17952813858150/DeliveryDashboard)
 
 ## Approach
 
 * Built three Tableau ready tables from the Olist marketplace data (96,478 delivered orders, 2016 to 2018) with SQL in `prepare.py`: performance by customer state, delivery trend by month, and a scorecard for the 425 sellers with at least 50 orders.
-* Specified a one page Tableau dashboard, with step by step build instructions: KPI tiles, a filled map of late rate by state, a monthly trend line, and a seller scatter of late rate against review score with a tier colour.
+* Built and published a one page Tableau Public dashboard: four KPI tiles, a filled map of order weighted late rate by state, a monthly trend of late rate against review score, and a seller scatter of late rate against review score coloured by tier, with the three findings on the page.
 * The same files drive a Python preview chart so the finding can be seen without Tableau.
 
 ## Key findings
@@ -38,15 +38,18 @@ TableauDeliveryDashboard/
   data/monthly delivery.csv      January 2017 to August 2018
   data/seller scorecard.csv      425 sellers (anonymised)
   charts/preview.png             Python preview of the main view
+  tableau/Delivery Performance Dashboard.twbx   packaged workbook (open in Tableau Public)
+  tableau/Delivery Performance Dashboard.twb    the same workbook as readable XML
+  tableau/*.csv                  Tableau ready copies of the data
 ```
 
 ## Tools
 
-Tableau Public (map, dual axis line, scatter, KPI tiles, filters, dashboard actions), SQL in SQLite, Python (pandas, matplotlib).
+Tableau Public (filled map, calculated fields for order weighted rates, trend lines, scatter, KPI tiles, dashboard), SQL in SQLite, Python (pandas, matplotlib).
 
 ## How to run
 
-1. The three CSV files in `data/` are ready to open in Tableau Public (free). Follow the Build Guide.
+1. Open the live dashboard from the link above, or open `tableau/Delivery Performance Dashboard.twbx` in Tableau Public (free). The Build Guide shows how to rebuild it from the CSV files.
 2. To rebuild them, first run the MarketplaceUnitEconomics project to create `olist.db`, copy it into this folder, then run `pip install pandas matplotlib` and `python prepare.py`.
 
 Data: Olist, Brazilian E Commerce Public Dataset, Kaggle, CC BY NC SA 4.0.
