@@ -2,14 +2,14 @@
 <workbook source-build='2026.1.0' source-platform='mac' version='18.1' xmlns:user='http://www.tableausoftware.com/xml/user'>
   <preferences />
   <datasources>
-    <datasource caption='State performance' inline='true' name='federated.stateperf' version='18.1'>
+    <datasource caption='State performance' inline='true' name='federated.state' version='18.1'>
       <connection class='federated'>
         <named-connections>
-          <named-connection caption='State performance' name='textscan.stateperf'>
+          <named-connection caption='State performance' name='textscan.state'>
             <connection class='textscan' directory='/Users/varunrathi/Documents/Tableau Delivery Dashboard' filename='state performance.csv' password='' server='' />
           </named-connection>
         </named-connections>
-        <relation connection='textscan.stateperf' name='state performance.csv' table='[state performance#csv]' type='table'>
+        <relation connection='textscan.state' name='state performance.csv' table='[state performance#csv]' type='table'>
           <columns character-set='UTF-8' header='yes' locale='en_US' separator=','><column datatype='string' name='country' ordinal='0' /><column datatype='string' name='state' ordinal='1' /><column datatype='string' name='state name' ordinal='2' /><column datatype='integer' name='orders' ordinal='3' /><column datatype='real' name='gmv brl' ordinal='4' /><column datatype='real' name='avg delivery days' ordinal='5' /><column datatype='real' name='late rate' ordinal='6' /><column datatype='real' name='avg review' ordinal='7' /><column datatype='real' name='freight share of price' ordinal='8' /></columns>
         </relation>
       </connection>
@@ -20,6 +20,11 @@
 <column caption='Late orders' datatype='real' name='[Calculation 1001]' role='measure' type='quantitative'><calculation class='tableau' formula='[orders] * [late rate]' /></column>
 <column caption='Weighted late rate' datatype='real' default-format='p0.0%' name='[Calculation 1002]' role='measure' type='quantitative'><calculation class='tableau' formula='SUM([Calculation 1001]) / SUM([orders])' /></column>
 <column caption='Weighted review' datatype='real' default-format='n#,##0.00' name='[Calculation 1003]' role='measure' type='quantitative'><calculation class='tableau' formula='SUM([avg review] * [orders]) / SUM([orders])' /></column>
+      <extract count='-1' enabled='true' units='records'>
+        <connection access_mode='readonly' author-locale='en_US' class='hyper' dbname='Data/Extracts/state.hyper' default-settings='hyper' schema='Extract' sslmode='' tablename='Extract' update-time='11/21/2026 10:40:00 PM' username='tableau_internal_user'>
+          <relation name='Extract' table='[Extract].[Extract]' type='table' />
+        </connection>
+      </extract>
     </datasource>
     <datasource caption='Monthly delivery' inline='true' name='federated.monthly' version='18.1'>
       <connection class='federated'>
@@ -34,6 +39,11 @@
       </connection>
       <aliases enabled='yes' />
       <column datatype='real' name='[late rate]' role='measure' type='quantitative' default-format='p0.0%' />
+      <extract count='-1' enabled='true' units='records'>
+        <connection access_mode='readonly' author-locale='en_US' class='hyper' dbname='Data/Extracts/monthly.hyper' default-settings='hyper' schema='Extract' sslmode='' tablename='Extract' update-time='11/21/2026 10:40:00 PM' username='tableau_internal_user'>
+          <relation name='Extract' table='[Extract].[Extract]' type='table' />
+        </connection>
+      </extract>
     </datasource>
     <datasource caption='Seller scorecard' inline='true' name='federated.sellers' version='18.1'>
       <connection class='federated'>
@@ -54,6 +64,11 @@
       <map to='#8c8c8c'><bucket>&quot;Watch (5 to 10 pct)&quot;</bucket></map>
       <map to='#d4d4d4'><bucket>&quot;On time (under 5 pct late)&quot;</bucket></map>
     </encoding></style-rule></style>
+      <extract count='-1' enabled='true' units='records'>
+        <connection access_mode='readonly' author-locale='en_US' class='hyper' dbname='Data/Extracts/sellers.hyper' default-settings='hyper' schema='Extract' sslmode='' tablename='Extract' update-time='11/21/2026 10:40:00 PM' username='tableau_internal_user'>
+          <relation name='Extract' table='[Extract].[Extract]' type='table' />
+        </connection>
+      </extract>
     </datasource>
   </datasources>
   <worksheets>
@@ -61,12 +76,12 @@
       <layout-options><title><formatted-text><run bold='true' fontsize='12'>Delivered orders</run></formatted-text></title></layout-options>
       <table>
         <view>
-          <datasources><datasource name='federated.stateperf' /></datasources>
-          <datasource-dependencies datasource='federated.stateperf'><column datatype='integer' name='[orders]' role='measure' type='quantitative' /><column datatype='real' name='[late rate]' role='measure' type='quantitative' default-format='p0.0%' /><column datatype='real' name='[avg review]' role='measure' type='quantitative' /><column-instance column='[orders]' derivation='Sum' name='[sum:orders:qk]' pivot='key' type='quantitative' /></datasource-dependencies>
+          <datasources><datasource name='federated.state' /></datasources>
+          <datasource-dependencies datasource='federated.state'><column datatype='integer' name='[orders]' role='measure' type='quantitative' /><column datatype='real' name='[late rate]' role='measure' type='quantitative' default-format='p0.0%' /><column datatype='real' name='[avg review]' role='measure' type='quantitative' /><column-instance column='[orders]' derivation='Sum' name='[sum:orders:qk]' pivot='key' type='quantitative' /></datasource-dependencies>
           <aggregation value='true' />
         </view>
         <style><style-rule element='cell'><format attr='font-size' value='26' /><format attr='font-weight' value='bold' /><format attr='text-align' value='center' /></style-rule></style>
-        <panes><pane><view><breakdown value='auto' /></view><mark class='Text' /><encodings><text column='[federated.stateperf].[sum:orders:qk]' /></encodings>
+        <panes><pane><view><breakdown value='auto' /></view><mark class='Text' /><encodings><text column='[federated.state].[sum:orders:qk]' /></encodings>
           <style><style-rule element='mark'><format attr='mark-labels-show' value='false' /></style-rule></style></pane></panes>
         <rows></rows>
         <cols></cols>
@@ -76,12 +91,12 @@
       <layout-options><title><formatted-text><run bold='true' fontsize='12'>Late delivery rate</run></formatted-text></title></layout-options>
       <table>
         <view>
-          <datasources><datasource name='federated.stateperf' /></datasources>
-          <datasource-dependencies datasource='federated.stateperf'><column datatype='integer' name='[orders]' role='measure' type='quantitative' /><column datatype='real' name='[late rate]' role='measure' type='quantitative' default-format='p0.0%' /><column datatype='real' name='[avg review]' role='measure' type='quantitative' /><column caption='Late orders' datatype='real' name='[Calculation 1001]' role='measure' type='quantitative'><calculation class='tableau' formula='[orders] * [late rate]' /></column><column caption='Weighted late rate' datatype='real' default-format='p0.0%' name='[Calculation 1002]' role='measure' type='quantitative'><calculation class='tableau' formula='SUM([Calculation 1001]) / SUM([orders])' /></column><column caption='Weighted review' datatype='real' default-format='n#,##0.00' name='[Calculation 1003]' role='measure' type='quantitative'><calculation class='tableau' formula='SUM([avg review] * [orders]) / SUM([orders])' /></column><column-instance column='[Calculation 1002]' derivation='User' name='[usr:Calculation 1002:qk]' pivot='key' type='quantitative' /></datasource-dependencies>
+          <datasources><datasource name='federated.state' /></datasources>
+          <datasource-dependencies datasource='federated.state'><column datatype='integer' name='[orders]' role='measure' type='quantitative' /><column datatype='real' name='[late rate]' role='measure' type='quantitative' default-format='p0.0%' /><column datatype='real' name='[avg review]' role='measure' type='quantitative' /><column caption='Late orders' datatype='real' name='[Calculation 1001]' role='measure' type='quantitative'><calculation class='tableau' formula='[orders] * [late rate]' /></column><column caption='Weighted late rate' datatype='real' default-format='p0.0%' name='[Calculation 1002]' role='measure' type='quantitative'><calculation class='tableau' formula='SUM([Calculation 1001]) / SUM([orders])' /></column><column caption='Weighted review' datatype='real' default-format='n#,##0.00' name='[Calculation 1003]' role='measure' type='quantitative'><calculation class='tableau' formula='SUM([avg review] * [orders]) / SUM([orders])' /></column><column-instance column='[Calculation 1002]' derivation='User' name='[usr:Calculation 1002:qk]' pivot='key' type='quantitative' /></datasource-dependencies>
           <aggregation value='true' />
         </view>
         <style><style-rule element='cell'><format attr='font-size' value='26' /><format attr='font-weight' value='bold' /><format attr='text-align' value='center' /></style-rule></style>
-        <panes><pane><view><breakdown value='auto' /></view><mark class='Text' /><encodings><text column='[federated.stateperf].[usr:Calculation 1002:qk]' /></encodings>
+        <panes><pane><view><breakdown value='auto' /></view><mark class='Text' /><encodings><text column='[federated.state].[usr:Calculation 1002:qk]' /></encodings>
           <style><style-rule element='mark'><format attr='mark-labels-show' value='false' /></style-rule></style></pane></panes>
         <rows></rows>
         <cols></cols>
@@ -91,12 +106,12 @@
       <layout-options><title><formatted-text><run bold='true' fontsize='12'>Average review score</run></formatted-text></title></layout-options>
       <table>
         <view>
-          <datasources><datasource name='federated.stateperf' /></datasources>
-          <datasource-dependencies datasource='federated.stateperf'><column datatype='integer' name='[orders]' role='measure' type='quantitative' /><column datatype='real' name='[late rate]' role='measure' type='quantitative' default-format='p0.0%' /><column datatype='real' name='[avg review]' role='measure' type='quantitative' /><column caption='Late orders' datatype='real' name='[Calculation 1001]' role='measure' type='quantitative'><calculation class='tableau' formula='[orders] * [late rate]' /></column><column caption='Weighted late rate' datatype='real' default-format='p0.0%' name='[Calculation 1002]' role='measure' type='quantitative'><calculation class='tableau' formula='SUM([Calculation 1001]) / SUM([orders])' /></column><column caption='Weighted review' datatype='real' default-format='n#,##0.00' name='[Calculation 1003]' role='measure' type='quantitative'><calculation class='tableau' formula='SUM([avg review] * [orders]) / SUM([orders])' /></column><column-instance column='[Calculation 1003]' derivation='User' name='[usr:Calculation 1003:qk]' pivot='key' type='quantitative' /></datasource-dependencies>
+          <datasources><datasource name='federated.state' /></datasources>
+          <datasource-dependencies datasource='federated.state'><column datatype='integer' name='[orders]' role='measure' type='quantitative' /><column datatype='real' name='[late rate]' role='measure' type='quantitative' default-format='p0.0%' /><column datatype='real' name='[avg review]' role='measure' type='quantitative' /><column caption='Late orders' datatype='real' name='[Calculation 1001]' role='measure' type='quantitative'><calculation class='tableau' formula='[orders] * [late rate]' /></column><column caption='Weighted late rate' datatype='real' default-format='p0.0%' name='[Calculation 1002]' role='measure' type='quantitative'><calculation class='tableau' formula='SUM([Calculation 1001]) / SUM([orders])' /></column><column caption='Weighted review' datatype='real' default-format='n#,##0.00' name='[Calculation 1003]' role='measure' type='quantitative'><calculation class='tableau' formula='SUM([avg review] * [orders]) / SUM([orders])' /></column><column-instance column='[Calculation 1003]' derivation='User' name='[usr:Calculation 1003:qk]' pivot='key' type='quantitative' /></datasource-dependencies>
           <aggregation value='true' />
         </view>
         <style><style-rule element='cell'><format attr='font-size' value='26' /><format attr='font-weight' value='bold' /><format attr='text-align' value='center' /></style-rule></style>
-        <panes><pane><view><breakdown value='auto' /></view><mark class='Text' /><encodings><text column='[federated.stateperf].[usr:Calculation 1003:qk]' /></encodings>
+        <panes><pane><view><breakdown value='auto' /></view><mark class='Text' /><encodings><text column='[federated.state].[usr:Calculation 1003:qk]' /></encodings>
           <style><style-rule element='mark'><format attr='mark-labels-show' value='false' /></style-rule></style></pane></panes>
         <rows></rows>
         <cols></cols>
@@ -121,15 +136,15 @@
       <layout-options><title><formatted-text><run bold='true' fontsize='12'>Rio de Janeiro and the north east break the delivery promise</run></formatted-text></title></layout-options>
       <table>
         <view>
-          <datasources><datasource name='federated.stateperf' /></datasources>
-          <datasource-dependencies datasource='federated.stateperf'><column datatype='string' name='[country]' role='dimension' type='nominal' semantic-role='[Country].[Name]' /><column datatype='string' name='[state name]' role='dimension' type='nominal' semantic-role='[State].[Name]' /><column datatype='integer' name='[orders]' role='measure' type='quantitative' /><column datatype='real' name='[late rate]' role='measure' type='quantitative' default-format='p0.0%' /><column datatype='real' name='[avg review]' role='measure' type='quantitative' /><column caption='Late orders' datatype='real' name='[Calculation 1001]' role='measure' type='quantitative'><calculation class='tableau' formula='[orders] * [late rate]' /></column><column caption='Weighted late rate' datatype='real' default-format='p0.0%' name='[Calculation 1002]' role='measure' type='quantitative'><calculation class='tableau' formula='SUM([Calculation 1001]) / SUM([orders])' /></column><column caption='Weighted review' datatype='real' default-format='n#,##0.00' name='[Calculation 1003]' role='measure' type='quantitative'><calculation class='tableau' formula='SUM([avg review] * [orders]) / SUM([orders])' /></column><column-instance column='[country]' derivation='None' name='[none:country:nk]' pivot='key' type='nominal' /><column-instance column='[state name]' derivation='None' name='[none:state name:nk]' pivot='key' type='nominal' /><column-instance column='[Calculation 1002]' derivation='User' name='[usr:Calculation 1002:qk]' pivot='key' type='quantitative' /><column-instance column='[orders]' derivation='Sum' name='[sum:orders:qk]' pivot='key' type='quantitative' /></datasource-dependencies>
+          <datasources><datasource name='federated.state' /></datasources>
+          <datasource-dependencies datasource='federated.state'><column datatype='string' name='[country]' role='dimension' type='nominal' semantic-role='[Country].[Name]' /><column datatype='string' name='[state name]' role='dimension' type='nominal' semantic-role='[State].[Name]' /><column datatype='integer' name='[orders]' role='measure' type='quantitative' /><column datatype='real' name='[late rate]' role='measure' type='quantitative' default-format='p0.0%' /><column datatype='real' name='[avg review]' role='measure' type='quantitative' /><column caption='Late orders' datatype='real' name='[Calculation 1001]' role='measure' type='quantitative'><calculation class='tableau' formula='[orders] * [late rate]' /></column><column caption='Weighted late rate' datatype='real' default-format='p0.0%' name='[Calculation 1002]' role='measure' type='quantitative'><calculation class='tableau' formula='SUM([Calculation 1001]) / SUM([orders])' /></column><column caption='Weighted review' datatype='real' default-format='n#,##0.00' name='[Calculation 1003]' role='measure' type='quantitative'><calculation class='tableau' formula='SUM([avg review] * [orders]) / SUM([orders])' /></column><column-instance column='[country]' derivation='None' name='[none:country:nk]' pivot='key' type='nominal' /><column-instance column='[state name]' derivation='None' name='[none:state name:nk]' pivot='key' type='nominal' /><column-instance column='[Calculation 1002]' derivation='User' name='[usr:Calculation 1002:qk]' pivot='key' type='quantitative' /><column-instance column='[orders]' derivation='Sum' name='[sum:orders:qk]' pivot='key' type='quantitative' /></datasource-dependencies>
           <aggregation value='true' />
         </view>
         <style></style>
-        <panes><pane><view><breakdown value='auto' /></view><mark class='Multipolygon' /><encodings><color column='[federated.stateperf].[usr:Calculation 1002:qk]' /><lod column='[federated.stateperf].[none:country:nk]' /><lod column='[federated.stateperf].[none:state name:nk]' /><tooltip column='[federated.stateperf].[sum:orders:qk]' /></encodings>
+        <panes><pane><view><breakdown value='auto' /></view><mark class='Multipolygon' /><encodings><color column='[federated.state].[usr:Calculation 1002:qk]' /><lod column='[federated.state].[none:country:nk]' /><lod column='[federated.state].[none:state name:nk]' /><tooltip column='[federated.state].[sum:orders:qk]' /></encodings>
           <style><style-rule element='mark'><format attr='mark-labels-show' value='false' /></style-rule></style></pane></panes>
-        <rows>[federated.stateperf].[Latitude (generated)]</rows>
-        <cols>[federated.stateperf].[Longitude (generated)]</cols>
+        <rows>[federated.state].[Latitude (generated)]</rows>
+        <cols>[federated.state].[Longitude (generated)]</cols>
       </table>
     </worksheet>
     <worksheet name='Trend'>
