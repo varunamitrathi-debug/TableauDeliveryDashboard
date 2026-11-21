@@ -25,6 +25,7 @@
           <relation name='Extract' table='[Extract].[Extract]' type='table' />
         </connection>
       </extract>
+      
     </datasource>
     <datasource caption='Monthly delivery' inline='true' name='federated.monthly' version='18.1'>
       <connection class='federated'>
@@ -44,6 +45,7 @@
           <relation name='Extract' table='[Extract].[Extract]' type='table' />
         </connection>
       </extract>
+      
     </datasource>
     <datasource caption='Seller scorecard' inline='true' name='federated.sellers' version='18.1'>
       <connection class='federated'>
@@ -59,16 +61,17 @@
       <aliases enabled='yes' />
       <column datatype='real' name='[late rate]' role='measure' type='quantitative' default-format='p0.0%' />
 <column caption='Problem seller' datatype='integer' name='[Calculation 2001]' role='measure' type='quantitative'><calculation class='tableau' formula='IF [late rate] &gt; 0.10 THEN 1 ELSE 0 END' /></column>
-<style><style-rule element='mark'><encoding attr='color' field='[none:tier:nk]' type='palette'>
-      <map to='#c0392b'><bucket>&quot;Problem (over 10 pct)&quot;</bucket></map>
-      <map to='#8c8c8c'><bucket>&quot;Watch (5 to 10 pct)&quot;</bucket></map>
-      <map to='#d4d4d4'><bucket>&quot;On time (under 5 pct late)&quot;</bucket></map>
-    </encoding></style-rule></style>
+
       <extract count='-1' enabled='true' units='records'>
         <connection access_mode='readonly' author-locale='en_US' class='hyper' dbname='Data/Extracts/sellers.hyper' default-settings='hyper' schema='Extract' sslmode='' tablename='Extract' update-time='11/21/2026 10:40:00 PM' username='tableau_internal_user'>
           <relation name='Extract' table='[Extract].[Extract]' type='table' />
         </connection>
       </extract>
+      <style><style-rule element='mark'><encoding attr='color' field='[none:tier:nk]' type='palette'>
+      <map to='#c0392b'><bucket>&quot;Problem (over 10 pct)&quot;</bucket></map>
+      <map to='#8c8c8c'><bucket>&quot;Watch (5 to 10 pct)&quot;</bucket></map>
+      <map to='#d4d4d4'><bucket>&quot;On time (under 5 pct late)&quot;</bucket></map>
+    </encoding></style-rule></style>
     </datasource>
   </datasources>
   <worksheets>
