@@ -6,6 +6,8 @@
 
 **Live dashboard on Tableau Public:** [Delivery Performance Dashboard](https://public.tableau.com/app/profile/varun.rathi8429/viz/DeliveryPerformanceDashboard_17952813858150/DeliveryDashboard)
 
+![Tableau Public dashboard](charts/dashboard.png)
+
 ## Approach
 
 * Built three Tableau ready tables from the Olist marketplace data (96,478 delivered orders, 2016 to 2018) with SQL in `prepare.py`: performance by customer state, delivery trend by month, and a scorecard for the 425 sellers with at least 50 orders.
@@ -38,6 +40,7 @@ TableauDeliveryDashboard/
   data/monthly delivery.csv      January 2017 to August 2018
   data/seller scorecard.csv      425 sellers (anonymised)
   charts/preview.png             Python preview of the main view
+  charts/dashboard.png           image of the published Tableau dashboard
   tableau/Delivery Performance Dashboard.twbx   packaged workbook (open in Tableau Public)
   tableau/Delivery Performance Dashboard.twb    the same workbook as readable XML
   tableau/*.csv                  Tableau ready copies of the data
